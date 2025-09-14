@@ -1,7 +1,5 @@
 Muhammad Rafi Sugianto / PBP B / 2406357135
 
-===============================================================================================
-
 <details>
 <Summary><b>Tugas 2</b></Summary>
 
@@ -114,8 +112,6 @@ Jawab: Menurut saya django dijadikan permulaan pembelajaran pengembangan perangk
 Jawab: Penjelasan tutorial sudah sangat baik dan lengkap karena tidak hanya menyediakan langkah yg harus dilakukan, melainkan juga menjelaskan kegunaan dari tiap kode serta konsep yang mendasarinya, makasih kak :D
 
 </details>
-
-===============================================================================================
 
 <details>
 <Summary><b>Tugas 3</b></Summary>
