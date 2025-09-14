@@ -2,6 +2,9 @@ Muhammad Rafi Sugianto / PBP B / 2406357135
 
 ===============================================================================================
 
+<details>
+<Summary><b>Tugas 2</b></Summary>
+
 [TUGAS 2]
 
 0. Membuat sebuah README.md yang berisi tautan menuju aplikasi PWS yang sudah di-deploy
@@ -110,7 +113,12 @@ Jawab: Menurut saya django dijadikan permulaan pembelajaran pengembangan perangk
 
 Jawab: Penjelasan tutorial sudah sangat baik dan lengkap karena tidak hanya menyediakan langkah yg harus dilakukan, melainkan juga menjelaskan kegunaan dari tiap kode serta konsep yang mendasarinya, makasih kak :D
 
+</details>
+
 ===============================================================================================
+
+<details>
+<Summary><b>Tugas 3</b></Summary>
 
 [TUGAS 3]
 
@@ -194,6 +202,11 @@ Jawab: Sejujurnya saya masih bingung tentang kegunaan postman selain membaca dat
 
 7. Mengakses keempat URL di poin 2 menggunakan Postman, membuat screenshot dari hasil akses URL pada Postman, dan menambahkannya ke dalam README.md.
 
+Jawab:
 
+![Mengakses URL views JSON by ID](json_id.jpg) 
+![Mengakses URL views xml](xml.jpg) 
+![Mengakses URL views xml by ID](xml_id.jpg) 
+![Mengakses URL views JSON](json.jpg)
 
-
+</details>
