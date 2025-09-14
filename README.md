@@ -2,6 +2,8 @@ Muhammad Rafi Sugianto / PBP B / 2406357135
 
 ===============================================================================================
 
+[TUGAS 2]
+
 0. Membuat sebuah README.md yang berisi tautan menuju aplikasi PWS yang sudah di-deploy
 
 Tautan: https://muhammad-rafi42-egogear.pbp.cs.ui.ac.id/
@@ -107,3 +109,91 @@ Jawab: Menurut saya django dijadikan permulaan pembelajaran pengembangan perangk
 6. Apakah ada feedback untuk asisten dosen tutorial 1 yang telah kamu kerjakan sebelumnya?
 
 Jawab: Penjelasan tutorial sudah sangat baik dan lengkap karena tidak hanya menyediakan langkah yg harus dilakukan, melainkan juga menjelaskan kegunaan dari tiap kode serta konsep yang mendasarinya, makasih kak :D
+
+===============================================================================================
+
+[TUGAS 3]
+
+1. Jelaskan mengapa kita memerlukan data delivery dalam pengimplementasian sebuah platform?
+ 
+Jawab: Sebelum menjawab pertanyaan ii, saya akan menjelaskan terlebih dahulu apa itu data delivery. Data delivery adalah proses mengirim atau menyampaikan data dari satu tempat ke tempat lain agar bisa digunakan. Dalam konteks ini, tempat bisa berupa database tempat data disimpan, server atau backend tempat data diproses, template HTML di frontend tempat data ditampilkan ke pengguna, atau sistem lain yg menerima data melalui API seperti JSON atau XML.
+
+Data delivery diperlukan dalam pengimplementasian sebuah platform karena data harus sampai ke pihak atau sistem yang membutuhkannya. Data delivery memastikan informasi yang tersimpan di database atau di backend dapat berpindah ke frontend untuk ditampilkan, atau ke sistem lain melalui API agar bisa diproses lebih lanjut. Jika tidak ada data delivery, maka input dari pengguna, misal melalui form, tidak bisa tersimpan di server, dan data yg sudah ada di server tidak bisa diakses oleh pengguna maupun aplikasi lain karena tidak adanya pergerakan data. Data delivery adalah mekanisme yang membuat data bergerak ke tempat yang membutuhkannya, sehingga platform bisa berjalan dengan interaktif.
+
+-----------------------------------------------------------------------------------------------
+
+2. Menurutmu, mana yang lebih baik antara XML dan JSON? Mengapa JSON lebih populer dibandingkan XML?
+
+Jawab: Menurut saya, JSON terasa lebih sederhana dan mudah dipahami dibanding XML. Misal ketika ingin melihat informasi tentang seseorang. Dengan JSON, data ditulis dalam format key value, misal:
+
+ {"name": "Burhan", "age": 25"}
+ 
+Menurut saya teks tersebut bisa langsung dimengerti bahwa nama orang itu Burhan dan usianya 25 tahun.
+
+Sementara itu, dengan XML, informasi yang sama ditulis dengan tag pembuka dan penutup, misal:
+
+ <person>
+    <name>Burhan</name>
+    <age>25</age>
+</person>
+ 
+Bagi orang yang tidak terbiasa dengan kode, tanda < > dan struktur yang terdiri dari banyak lapisan bisa membuat data terlihat lebih rumit untuk dibaca. JSON terlihat lebih ringkas, rapi, dan langsung ke inti informasi, sehingga lebih mudah dibaca dan dimengerti.
+
+Selain karena kemudahan pembacaan yang saya sebutkan sebelumnya, ada beberapa alasan lain yang menjadikan JSON lebih populer dibandingkan XML. Diantaranya adalah karena JSON lebih efisien untuk dikirim lewat jaringan karena ukurannya lebih kecil dan lebih mudah diproses oleh bahasa pemrograman modern.
+
+-----------------------------------------------------------------------------------------------
+
+3. Jelaskan fungsi dari method is_valid() pada form Django dan mengapa kita membutuhkan method tersebut?
+
+Jawab: Method is_valid() berfungsi untuk mengecek apakah data yang dikirim melalui telah memenuhi semua ketentuan yang ditetapkan. Dalam kasus tugas kali ini, karena form dibuat dari model menggunakan ModelForm, maka aturan yang sudah ditentukan di model otomatis diterapkan di form (misalnya menentukan tipe data dan jumlah karakter maksimal yang bisa dimasukkan di form).
+
+Method ini diperlukan karena kita tidak ingin kasus seperti data kosong atau salah tipe tersimpan di database. Dengan is_valid(), kita memastikan hanya data yang benar dan sesuai aturan yang diterima dan diproses, sehingga aplikasi lebih aman dan data tetap konsisten.
+
+-----------------------------------------------------------------------------------------------
+
+4. Mengapa kita membutuhkan csrf_token saat membuat form di Django? Apa yang dapat terjadi jika kita tidak menambahkan csrf_token pada form Django? Bagaimana hal tersebut dapat dimanfaatkan oleh penyerang?
+
+Jawab: Sebelum menjawab pertanyaan ini, saya akan menjelaskan terlebih dahulu apa yg dimaksud dengan CSRF token. CSRF token adalah kode unik yang dibuat oleh server dan disisipkan ke dalam form HTML untuk melindungi aplikasi dari serangan CSRF. Kode ini akan berfungsi sebagai tanda pengenal rahasia untuk memastikan request yang dikirim ke server berasal dari pengguna asli dan dari aplikasi itu sendiri, bukan dari pihak ketiga. 
+
+Serangan CSRF itu sendiri adalah jenis serangan di mana penyerang mencoba membuat request palsu ke server menggunakan sesi login pengguna tanpa sepengetahuan pengguna. Oleh karena itu kita membutuhkan csrf_token saat membuat form di Django. Dengan menambahkan {% csrf_token %} di form, Django akan menyisipkan token unik yang terkait dengan sesi pengguna. Token ini dikirim bersama data form ketika pengguna submit. Server kemudian akan memeriksa token tersebut. Jika token valid, request diproses, namun jika token tidak ada atau salah, request ditolak.
+
+Jika kita tidak menambahkan csrf_toke pada form Django, maka server tidak bisa membedakan request asli dari request palsu. Sehingga setiap request yang datang dari browser pengguna dianggap sah.
+
+Hal ini dapat dimanfaatkan oleh penyerang dengan membuat halaman web jahat yang terlihat normal. Misalkan pengguna membuka halaman itu saat sedang login di situs lain yang tidak menerapkan csrf_token, maka halaman jahat bisa mengirim perintah palsu ke situs yang dimana ia sedang login (misalnya memindahkan uang atau mengubah data tanpa disadari pengguna). Karena server mengira request berasal dari pengguna tsb, maka perintah palsu tadi bisa dijalankan.
+
+-----------------------------------------------------------------------------------------------
+
+5. Jelaskan bagaimana cara kamu mengimplementasikan checklist di atas secara step-by-step (bukan hanya sekadar mengikuti tutorial).
+
+Jawab: 
+Langkah pertama yang saya lakukan adalah membuat form sederhana untuk menginput produk baru pada aplikasi. Tapi sebelum itu, saya memberi beberapa perubahan pada model dengan menghapus beberapa atribut yang menurut saya tidak perlu, dan melakukan migrasi pada model. Selanjutnya untuk membuat form sederhana, saya menyiapkan sebuah class bernama ProductForm yang akan mewarisi ModelForm. Karena memakai ModelForm, form akan digenerate secara otomatis berdasarkan fields yg telah ditentukan. Selain itu, data yang diisi lewat form bisa langsung divalidasi dan disimpan sebagai objek product di database cukup dengan form.save(). 
+
+Langkah selanjutnya yang saya lakukan adalah menghubungkan form dan data product dengan tampilan web. Saya mengimport beberapa fungsi bantu dari Django seperti render, redirect, dan get_object_or_404, masing2 berguna untuk merender template HTML, meredirect halaman setelah data tersimpan, dan mengambil objek dari database. 
+
+Setelahnya, saya menambahkan .objects.all(), untuk mengambil semua product dari database, di fungsi show_main. Saya juga menambahkan fungsi create_product dan show_product. Fungsi create_product digunakan untuk menghasilkan form dimana pengguna dapat memasukkan data untuk product baru. Sementara show_product berguna untuk menampilkan product berdasarkan id, fungsi ini menggunakan get_object_or_404 sehingga akan mengembalikan halaman 404 ketika product tidak ditemukan. Saya mengimport kedua fungsi create_product dan show_product tersebut ke urls.py,dan menambahkan path urlnya di urlpatterns.
+
+Berikutnya, saya melakukan implementasi skeleton pada kerangka views. Hal ini dilakukan supaya semua halaman pada tampilan web memiliki dasar yang sama. Saya menambahkan tag {% block %} dan {% endblock %} sebagai template dimana fitur unik tiap halaman diletakkan. Saya juga mengonfigurasi settings.py agar mendeteksi base.html sebagai file template.
+
+Setelahnya, saya memperbarui main.html agar bisa menampilkan data product dan menambahkan tombol Add Product yang akan meredirect pengguna ke form. Kemudian saya membuat file create_product.html, yaitu form input data ketika menambahkan produk baru. Dengan ini, saya telah mengimplementasikan checklist ke-4, yaitu "Membuat halaman form untuk menambahkan objek model pada app sebelumnya." Saya juga membuat product_detail.html untuk halaman yang menampilkan detail produk. Dengan ini saya telah mengimplementasikan checklist ke-5, yaitu "Membuat halaman yang menampilkan detail dari setiap data objek model".
+
+Pada rangkaian langkah tersebut juga saya telah mengimplementasikan checkpoint ke-3,yaitu "Membuat halaman yang menampilkan data objek model yang memiliki tombol "Add" yang akan redirect ke halaman form, serta tombol "Detail" pada setiap data objek model yang akan menampilkan halaman detail objek."
+
+Selanjutnya, saya menambahkan url deployment saya pada CSRF_TRUSTED_ORIGINS di settings.pyHal ini dilakukan untuk memberitahu Django bahwa alamat website yang sudah kamu deploy adalah alamat yang aman dan dipercaya untuk menerima permintaan yang membawa CSRF token.
+
+Setelah menyelesaikan fitur form dan menampilkan detail produk, saya lanjut ke menampilkan data dalam bentuk XML dan JSON. Untuk melakukan implementasi tersebut, saya mengimport HttpResponse, serializers, dan menambahkan 2 fungsi baru di views.py. Fungsi pertama, show_xml akan mengambil semua objek produk dalam database, dan menerjemahkannya menjadi format xml, kemudian mengembalikan seluruh data produk dalam format xml sebagai http response. Fungsi kedua, show_json, juga akan mengambil semua objek produk dalam database, namun menerjemahkannya menjadi format json, kemudian mengembalikan seluruh data produk dalam format json sebagai http response. 
+
+Selanjutnya saya juga menambahkan 2 fungsi lagi, show_xml_by_id dan show_json_by_id, yg berfungsi untuk mengembalikan data dalam bentuk xml dan json, tapi berdasarkan id. Cara kerjanya sama dengan 2 fungsi sebelumnya, tapi kita tidak mengambil semua objek dalma database, melainkan melakukan filter berdasarkan id dengan news_item = News.objects.filter(pk=news_id). Setelah itu saya juga mengimport keempat fungsi tadi ke urls.py dan menambahkan pathnya di urlpatterns. Dengan ini, saya telah mengimplementasikan checklist pertama dan kedua, yaitu "Tambahkan 4 fungsi views baru untuk melihat objek yang sudah ditambahkan dalam format XML, JSON, XML by ID, dan JSON by ID." dan "Membuat routing URL untuk masing-masing views yang telah ditambahkan pada poin 1."
+
+-----------------------------------------------------------------------------------------------
+
+6. Apakah ada feedback untuk asdos di tutorial 2 yang sudah kalian kerjakan?
+
+Jawab: Sejujurnya saya masih bingung tentang kegunaan postman selain membaca data dalam xml dan json, tapi selain itu penjelasan tutorial sudah sangat baik dan lengkap karena tidak hanya menyediakan langkah yg harus dilakukan, melainkan juga menjelaskan kegunaan dari tiap kode serta konsep yang mendasarinya, makasih kak :D
+
+-----------------------------------------------------------------------------------------------
+
+7. Mengakses keempat URL di poin 2 menggunakan Postman, membuat screenshot dari hasil akses URL pada Postman, dan menambahkannya ke dalam README.md.
+
+
+
+
