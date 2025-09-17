@@ -1,7 +1,12 @@
 from django.db import models
+
+from django.contrib.auth.models import User
+
 import uuid
 
 class Product(models.Model):
+
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
 
     CATEGORY_CHOICES = [
     ("Finisher", "Finisher"),
@@ -33,3 +38,8 @@ class Product(models.Model):
     def increment_hype(self):
         self.hype += 1
         self.save()
+
+class Employee(models.Model) :
+    name = models.CharField(max_length=255)
+    age = models.PositiveIntegerField()
+    persona = models.TextField()

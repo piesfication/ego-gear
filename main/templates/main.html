@@ -11,9 +11,22 @@
  <h5>Class:</h5>
  <p>{{ class }}</p>
 
- <a href="{% url 'main:create_product' %}">
+<a href="{% url 'main:create_product' %}">
   <button>+ Add Product</button>
 </a>
+
+<a href="{% url 'main:logout' %}">
+  <button>Logout</button>
+</a>
+<h5>Sesi terakhir login: {{ last_login }}</h5>
+
+
+<a href="?filter=all">
+    <button type="button">Universal Gear</button>
+</a>
+<a href="?filter=my">
+    <button type="button">Personal Gear</button>
+</a> 
 
 <hr>
 
@@ -46,3 +59,15 @@
 {% endif %}
 
  {% endblock content %}
+
+
+<!-- <h5> Nama:</h5>
+<p> {{ nama }} </p>
+
+<h5> Usia:</h5>
+<p> {{ age }} </p>
+
+<h5> Persona:</h5>
+<p> {{ persona }} </p>
+ -->
+
