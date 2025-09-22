@@ -210,6 +210,8 @@ Jawab:
 <details>
 <Summary><b>Tugas 4</b></Summary>
 
+[TUGAS 4]
+
 1. Apa itu Django AuthenticationForm? Jelaskan juga kelebihan dan kekurangannya.
 
 Jawab:
@@ -230,10 +232,10 @@ Autentikasi adalah proses memvalidasi identitas user atau sistem untuk memastika
 Otorisasi adalah proses menentukan hak atau izin yang dimiliki user setelah identitasnya berhasil diverifikasi melalui autentikasi. 
 
 Bagaimana Django mengimplementasikan kedua konsep tsb? Dalam mengimplementasikan autentikasi, Django menyediakan sistem bawaan yang terdiri dari model User, form dan view siap pakai (misal AuthenticationForm, LoginView, LogoutView), backend autentikasi, session, cookie, dan middleware (AuthenticationMiddleware, SessionMiddleware). Alurnya, misal ketika user login:
-> Form login dikirim ke server.
-> Django memanggil authenticate() untuk memeriksa kecocokan kredensial dengan data user di database.
-> Misal valid, login() membuat session di server dan mengirim cookie sessionid ke browser.
-> Pada request selanjutnya, middleware membaca session dan menempelkan objek user ke request.user, sehingga sistem selalu mengenali siapa user yg sedang aktif.
+a. Form login dikirim ke server.
+b. Django memanggil authenticate() untuk memeriksa kecocokan kredensial dengan data user di database.
+c. Misal valid, login() membuat session di server dan mengirim cookie sessionid ke browser.
+d. Pada request selanjutnya, middleware membaca session dan menempelkan objek user ke request.user, sehingga sistem selalu mengenali siapa user yg sedang aktif.
 
 Sementara itu untuk otorisasi, Django akan menggunakan permission dan group untuk menentukan apa yang boleh dilakukan user. Setiap model secara default punya permission (add, change, delete, view), dan kita bisa membuat permission custom. Hak akses ini bisa dicek di view menggunakan decorator seperti @login_required, @permission_required, dst.
 
@@ -277,7 +279,7 @@ Dengan menyelesaikan rangkaian langkah di atas, saya telah mengimplementasikan c
 
 Selanjutnya adalah menerapkan cookies. Saya mengimport HttpResponseRedirect, reverse, dan datetime pada views.py. Kemudian, saya memodifikasi fungsi login_user agar dapat menyimpan cookies last login user. Jadi ketika user telah login dan terautentikasi, maka cookie bernama last_login akan ditambahkan pada HTTP response. Nilainya adalah timestamp saat login (waktu server saat itu, diubah ke string). Cookie ini akan tersimpan di browser user. Kemudian, saya memodifikasi fungsi show_main dan main.html agar bisa menampilkan data login terakhir, implementasinya adalah dengan membaca dari cookies. Setelah itu saya juga memodifikasi fungsi logout_user agar dapat menghapus cookies last login saat user melakukan logout.
 
-Setelah itu saya kana menghubungkan model Product dengan user, dengan begitu user yg sedang login bisa melihat product yg ia buat sendiri. Saya mengimport User pada models.py. Kemudian saya mendefinisikan relasi banyak ke satu pada model Product. Artinya banyak product bisa dimiliki oleh satu user. Setelah memodifikasi model, saya melakukan migrasi. 
+Setelah itu saya akan menghubungkan model Product dengan user, dengan begitu user yg sedang login bisa melihat product yg ia buat sendiri. Saya mengimport User pada models.py. Kemudian saya mendefinisikan relasi banyak ke satu pada model Product. Artinya banyak product bisa dimiliki oleh satu user. Setelah memodifikasi model, saya melakukan migrasi. 
 
 Setelah melakukan migrasi, saya memodifikais fungsi di views.py lainnya. Di create_product saya memodifikasi agar field user pada tiap produk menjadi nama dari user yang sedang login (product_entry.user = request.user), saya juga memodifikais show_main yang bisa menampilkan smeua produk berdasarkan filter, yaitu Universal (product dari semua user) atau Personal (produk pribadi). Usernae pada halaman main juga dimodifikais sehingga akan langsung mengambil dari user yang sedang login saat ini. Selanjutnya adalah memodifikasi template, yaitu pada main.html untuk menambahkan tombol filter untuk menentukan produk apa yg akan ditampilkan. Selain main.html, di product_details.html juga ditambahkan nama dari pembuat produk. 
 
