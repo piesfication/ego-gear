@@ -287,7 +287,8 @@ Dengan ini saya telah mengimplementasikan checklist ketiga dan keempat, yaitu "M
 
 6. Membuat dua (2) akun pengguna dengan masing-masing tiga (3) dummy data menggunakan model yang telah dibuat sebelumnya untuk setiap akun di lokal.
 
-![Akun pengguna 1 dengan 3 produk dummy](user1.jpg)
-![Akun pengguna 2 dengan 3 produk dummy](user2.jpg) 
+![Akun pengguna 1 dengan 3 produk dummy](<user 1.jpg>)![](<user 1 full.jpg>) 
+
+![Akun pengguna 2 dengan 3 produk dummy](<user 2.jpg>)![](<user 2 full.jpg>)
 
 </details>
