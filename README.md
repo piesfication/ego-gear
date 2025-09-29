@@ -294,3 +294,31 @@ Dengan ini saya telah mengimplementasikan checklist ketiga dan keempat, yaitu "M
 ![Akun pengguna 2 dengan 3 produk dummy](<user 2.jpg>)![](<user 2 full.jpg>)
 
 </details>
+
+<details>
+<Summary><b>Tugas 4</b></Summary>
+
+[TUGAS 5]
+
+1. 
+
+-----------------------------------------------------------------------------------------------
+
+2.
+
+-----------------------------------------------------------------------------------------------
+
+3.
+
+-----------------------------------------------------------------------------------------------
+
+4.
+
+-----------------------------------------------------------------------------------------------
+
+5. Jelaskan bagaimana cara kamu mengimplementasikan checklist di atas secara step-by-step (bukan hanya sekadar mengikuti tutorial)!
+
+Jawab: Fitur pertama yang ingin saya implementasikan adalah menambahkan edit dan hapus produk. Saya membuat dua fungsi baru di views,py, yaitu edit_product dan delete_product. Fungsi edit_product akan mencari produk yg sesuai sesuai id dan membuat form yg berisi data lama produk tsb. Data ini nantinya bisa diedit oleh user. Fungsi kemudian akan mengambil data yg tela diedit dari for, dan melakukan validasi. Jika data valid maka data akan disimpan sebagai preubahan ke dalam database. Saya mengimport fungsi ini di urls.py dan melalkukan routing. Saya juga membuat template edit_product.html sebagai tampilan yg akan dirender ketika user mengedit produk dan memperbarui main.html agar menampilkan tombol Edit di setiap produk yang punya user yg sedang login.
+
+Selanjutnya, fungsi delete_product akan mengambil product sesuai id dan menghapusnya. Sama sepeti fungsi edit_product sebelumnya, saya mengimport fungsi delete_product di urls.py dan melakukan routing. Kemudian saya memperbarui main.html agar menampilkan tombol Delete di setiap produk yang punya user yg sedang login.
+

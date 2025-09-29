@@ -1,73 +1,72 @@
- {% extends 'base.html' %}
- {% block content %}
- <h1>{{ app }}</h1>
+{% extends 'base.html' %}
+{% load static %}
 
- <h5>NPM: </h5>
- <p>{{ npm }}<p>
+{% block meta %}
+<title>EGO Gear</title>
+{% endblock meta %}
 
- <h5>Name:</h5>
- <p>{{ name }}</p>
+{% block content %}
+{% include 'navbar.html' %}
+<div class="bg-[#0A0F1F] w-full pt-16 min-h-screen">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
 
- <h5>Class:</h5>
- <p>{{ class }}</p>
+    <!-- Header Section -->
+    <div class="mb-8">
+      <h1 class="text-3xl font-bold text-blue-50 mb-2">Latest Gear Lineup</h1>
+      <p class="text-blue-200">Stay sharp. Claim every new release before the rest</p>
+    </div>
 
-<a href="{% url 'main:create_product' %}">
-  <button>+ Add Product</button>
-</a>
+    <!-- Filter Section -->
+    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-8 
+                bg-gradient-to-br from-[#0A0F1F] via-[#1C1F3B] to-[#0A0F1F]
+                rounded-lg border border-blue-500/40 p-4">
+      <div class="flex space-x-3 mb-4 sm:mb-0">
+        <a href="?" 
+           class="{% if request.GET.filter == 'all' or not request.GET.filter %} 
+                    bg-[#0A84FF] text-white 
+                  {% else %} 
+                    bg-transparent text-blue-200 border border-blue-500 
+                  {% endif %} 
+                  px-4 py-2 rounded-md font-medium transition-colors hover:bg-[#0A84FF] hover:text-white">
+          Universal Gear
+        </a>
+        <a href="?filter=my" 
+           class="{% if request.GET.filter == 'my' %} 
+                    bg-[#0A84FF] text-white 
+                  {% else %} 
+                    bg-transparent text-blue-200 border border-blue-500 
+                  {% endif %} 
+                  px-4 py-2 rounded-md font-medium transition-colors hover:bg-[#0A84FF] hover:text-white">
+          Personal Gear
+        </a>
+      </div>
+      {% if user.is_authenticated %}
+        <div class="text-sm text-blue-300">
+          Last login: {{ last_login }}
+        </div>
+      {% endif %}
+    </div>
 
-<a href="{% url 'main:logout' %}">
-  <button>Logout</button>
-</a>
-<h5>Sesi terakhir login: {{ last_login }}</h5>
-
-
-<a href="?filter=all">
-    <button type="button">Universal Gear</button>
-</a>
-<a href="?filter=my">
-    <button type="button">Personal Gear</button>
-</a> 
-
-<hr>
-
-{% if not product_list %}
-<p>Tak ada gear? Tak masalah. Striker sejati menciptakan jalannya sendiri!</p>
-{% else %}
-
-{% for product in product_list %}
-<div>
-  <h2><a href="{% url 'main:show_product' product.id %}">{{ product.name }}</a></h2>
-
-  <p><b>{{ product.get_category_display }}</b>{% if product.is_featured %} | 
-    <b>Featured</b>{% endif %}{% if product.is_product_hype %} | 
-    <b>Hype</b>{% endif %} | <i>{{ product.created_at|date:"d M Y H:i" }}</i> 
-    | Hype: {{ product.hype }}</p>
-
-  {% if product.thumbnail %}
-  <img src="{{ product.thumbnail }}" alt="thumbnail" width="150" height="100">
-  <br />
-  {% endif %}
-
-  <p>{{ product.description|truncatewords:25 }}...</p>
-
-  <p><a href="{% url 'main:show_product' product.id %}"><button>Read More</button></a></p>
+    <!-- Product Grid -->
+    {% if not product_list %}
+      <div class="bg-[#1C1F3B] rounded-lg border border-blue-500/40 p-12 text-center shadow-[0_0_20px_#0A84FF]/20">
+        <div class="w-32 h-32 mx-auto mb-4">
+          <img src="{% static 'image/no-product.png' %}" alt="No product available" class="w-full h-full object-contain">
+        </div>
+        <h3 class="text-lg font-medium text-blue-50 mb-2">No gear? No problem!</h3>
+        <p class="text-blue-300 mb-6">A true striker forges their own path!</p>
+        <a href="{% url 'main:create_product' %}" 
+           class="inline-flex items-center px-4 py-2 bg-[#0A84FF] text-white rounded-md hover:bg-blue-600 transition-colors">
+          Add Gear
+        </a>
+      </div>
+    {% else %}
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {% for product in product_list %}
+          {% include 'card_product.html' with product=product %}
+        {% endfor %}
+      </div>
+    {% endif %}
+  </div>
 </div>
-
-<hr>
-{% endfor %}
-
-{% endif %}
-
- {% endblock content %}
-
-
-<!-- <h5> Nama:</h5>
-<p> {{ nama }} </p>
-
-<h5> Usia:</h5>
-<p> {{ age }} </p>
-
-<h5> Persona:</h5>
-<p> {{ persona }} </p>
- -->
-
+{% endblock content %}
