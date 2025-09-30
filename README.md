@@ -120,7 +120,7 @@ Jawab: Penjelasan tutorial sudah sangat baik dan lengkap karena tidak hanya meny
 
 1. Jelaskan mengapa kita memerlukan data delivery dalam pengimplementasian sebuah platform?
  
-Jawab: Sebelum menjawab pertanyaan ii, saya akan menjelaskan terlebih dahulu apa itu data delivery. Data delivery adalah proses mengirim atau menyampaikan data dari satu tempat ke tempat lain agar bisa digunakan. Dalam konteks ini, tempat bisa berupa database tempat data disimpan, server atau backend tempat data diproses, template HTML di frontend tempat data ditampilkan ke pengguna, atau sistem lain yg menerima data melalui API seperti JSON atau XML.
+Jawab: Sebelum menjawab pertanyaan ini, saya akan menjelaskan terlebih dahulu apa itu data delivery. Data delivery adalah proses mengirim atau menyampaikan data dari satu tempat ke tempat lain agar bisa digunakan. Dalam konteks ini, tempat bisa berupa database tempat data disimpan, server atau backend tempat data diproses, template HTML di frontend tempat data ditampilkan ke pengguna, atau sistem lain yg menerima data melalui API seperti JSON atau XML.
 
 Data delivery diperlukan dalam pengimplementasian sebuah platform karena data harus sampai ke pihak atau sistem yang membutuhkannya. Data delivery memastikan informasi yang tersimpan di database atau di backend dapat berpindah ke frontend untuk ditampilkan, atau ke sistem lain melalui API agar bisa diproses lebih lanjut. Jika tidak ada data delivery, maka input dari pengguna, misal melalui form, tidak bisa tersimpan di server, dan data yg sudah ada di server tidak bisa diakses oleh pengguna maupun aplikasi lain karena tidak adanya pergerakan data. Data delivery adalah mekanisme yang membuat data bergerak ke tempat yang membutuhkannya, sehingga platform bisa berjalan dengan interaktif.
 
@@ -300,19 +300,81 @@ Dengan ini saya telah mengimplementasikan checklist ketiga dan keempat, yaitu "M
 
 [TUGAS 5]
 
-1. 
+1. Jika terdapat beberapa CSS selector untuk suatu elemen HTML, jelaskan urutan prioritas pengambilan CSS selector tersebut!
+
+Jawab: Sebelum saya menjawab pertanyaan ini, ada baiknya saya menjelaskan dulu apa itu selector. Selector merupakan bagian dari CSS yang dipakai untuk menentukan elemen HTML mana yg akan diberi style. 
+Di CSS misal ada beberapa aturan yang ditujukan pada elemen yang sama, tidak semuanya diterapkan sekaligus, tapi dipilih aturan mana yg paling kuat berdasarkan prioritas.
+
+Yg paling kuat adalah inline style, yaitu gaya yang ditulis langsung di atribut style dalam tag HTML. Inline style hampir selalu menang karena dianggap perintah langsung dari elemen itu sendiri, contohnya:
+
+<!-- <p style="color: red;">Teks ini merah</p> -->
+
+Setelah itu, prioritas berikutnya adalah selector ID. Contoh selector ID:
+
+#judul { color: red; }
+
+Selanjutnya adalah selector class, attribute, dan pseudo-class. Selector ini bisa dipakai berulang kali di banyak elemen. Contohnya misal selector class:
+
+<!-- <p class="teks-merah">Paragraf 1</p> -->
+<!-- <p class="teks-merah">Paragraf 2</p> -->
+
+Selanjutnya yaitu selector elemen atau tag seperti p, div, atau h1, termasuk juga pseudo-element. Selector ini prioritasnya lebih rendah dari class atau ID. Contohnya:
+
+p { color: blue; }
+
+Selanjutnya adalah universal selector (*) dan style inheritance yg hanya dipakai jika tidak ada aturan lain yang lebih spesifik. Contohnya:
+
+{
+    margin: 0;   
+    padding: 0;  
+}
+
+Nah misal ada dua aturan dengan tingkat specificity yang sama, maka CSS akan memilih aturan yang ditulis paling akhir di file atau yg terakhir dibaca oleh browser. Selain itu, itu ada satu pengecualian khusus, yaitu deklarasi dengan !important. !important bisa menimpa semua aturan lain, tapi misal ada dua aturan !important, maka akan dilihat lagi yg mana yg lebih spesifik dan yg mana yg ditulis terakhir. 
 
 -----------------------------------------------------------------------------------------------
 
-2.
+2. Mengapa responsive design menjadi konsep yang penting dalam pengembangan aplikasi web? Berikan contoh aplikasi yang sudah dan belum menerapkan responsive design, serta jelaskan mengapa!
+
+Jawab: Responsive design artinya yaitu tampilan aplikasi web bisa menyesuaikan otomatis dengan berbagai ukuran layar baik itu desktop, laptop, tablet, hp, dst. 
+
+Responsive design menjadi penting karena penggunaan mobile yang dominan. Sebagian besar pengguna internet saat ini mengakses web lewat smartphone. Misal tampilan web hanya cocok untuk layar besar, user experience di HP jadi jelek. Selain itu responsive design bisa mengefisiensi pengembangan, sehingga kita tidak perlu membuat versi website terpisah untuk desktop dan mobile, cukup satu desain yg fleksibel.
+
+Contoh aplikasi webdengan responsive design adalah Tokopedia. Ketika dibuka di desktop, tampilannya grid besar dengan banyak informasi. Namun ketika dibuka di smartphone, layout berubah jadi lebih simpel, menu navigasi dipadatkan, dan berbagai perubahan lainnya.
+
+Sementara itu contoh aplikasi web yg belum menerapkan responsive design adalah https://arngren.net/
+Website ini punya desain yang kaku dengan fixed layout, bukan flexible grid atau CSS modern. S sehingga kalau dibuka di hp tampilannya tidak menyesuaikan hp.
 
 -----------------------------------------------------------------------------------------------
 
-3.
+3. Jelaskan perbedaan antara margin, border, dan padding, serta cara untuk mengimplementasikan ketiga hal tersebut!
+
+Jawab: Dalam CSS ada konsep bernama box model. Anggaplah setiap elemen HTML sebagai sebuah kotak. Kotak ini punya beberapa lapisan dari dalam ke luar, yaitu isi konten, padding, border, lalu margin.
+
+Padding adalah ruang antara isi elemen (misalnya teks atau gambar) dengan batas dalam kotak. Jadi padding seperti memberi nafas agar teks tidak terlalu mepet dengan pinggir kotak.
+
+Border adalah garis yang membungkus kotak setelah padding, anggaplah seperti seperti bingkai foto. Border membatasi isi di dalamnya dan bisa diatur warnanya, ketebalannya, dst.
+
+Margin adalah ruang paling luar, yaitu jarak antara satu kotak dengan kotak lain. Margin dipakai untuk mengatur jarak antar elemen di halaman web.
+
+Cara mengimplementasikan ketiganya di CSS adalah dengan mengatur nilainya masing2. Misalnya seperti ini:
+
+Misal kita punya class bernama box dan ingin mengatur margin, border, dan paddingnya maka
+
+.box {
+  margin: 30px;              
+  border: 3px solid blue;     
+  padding: 20px;             
+}
 
 -----------------------------------------------------------------------------------------------
 
-4.
+4. Jelaskan konsep flex box dan grid layout beserta kegunaannya!
+
+Jawab: Flexbox dan Grid itu adalah dua fitur CSS modern untuk mengatur tata letak elemen di halaman web.
+
+Flexbox (Flexible Box Layout) berfungsi ketika kita ingin mengatur elemen dalam satu dimensi, bisa horizontal atau vertikal. Misal ada kasus dimana kita ingin menderetkan box agar mereka sejajar, rata tengah, atau punya jarak yang otomatis rapi, Flexbox bisa digunakan. Contoh kegunaannya bisa dipakai untuk navbar, tombol-tombol sejajar, atau card yang selalu center walaupun ukuran layarnya berubah.
+
+Grid Layout berbeda karena ia bekerja dalam dua dimensi, dimana kita bisa atur baris dan kolomnya, anggaplah sebagai sebuah grid. Grid Lyout cocok untuk komposisi dengan banyak blok yang saling bersusunan, contoh kegunaannya seperti galeri, dashboard, dst.
 
 -----------------------------------------------------------------------------------------------
 
@@ -322,3 +384,34 @@ Jawab: Fitur pertama yang ingin saya implementasikan adalah menambahkan edit dan
 
 Selanjutnya, fungsi delete_product akan mengambil product sesuai id dan menghapusnya. Sama sepeti fungsi edit_product sebelumnya, saya mengimport fungsi delete_product di urls.py dan melakukan routing. Kemudian saya memperbarui main.html agar menampilkan tombol Delete di setiap produk yang punya user yg sedang login.
 
+Langkah berikutnya adalah melakukan implementasi kustomisasi desain pada template html. Saya menggunakan Tailwind CSS sebagai CSS framework untuk melakukan kustomisasi pada seluruh halaman.
+
+Pada halaman login, register, add product, edit product, dan detail product, saya menambahkan link Tailwind CDN dan Google Fonts (Poppins) di base.html. Hal ini saya lakukan agar saya bisa menyesuaikan fontnya menggunakan font Poppins. Lalu untuk warna, saya mengganti warna bawaan hijau dari tutorial menjadi kombinasi gelap dengan aksen biru.
+
+Untuk cardnya, saya melakukan kustomisasi yaitu enggunakan gradient background dari biru gelap ke biru keunguan, input field diberi bg-[#1C1F3B] text-blue-50 dan fokus focus:ring-[#0A84FF], dan tombol utama bg-[#0A84FF] hover:bg-blue-600, agar tidak sama persis dengan tutorial.
+
+Selain penjelasan di atas, berikut ini adalah daftar beberapa kustomisasi lain yg saya lakukan untuk menunjang implementasi pada checklist:
+
+- Halaman Daftar Product
+
+    Tampilan Responsive: Menggunakan grid Tailwind (grid-cols-1 md:grid-cols-2 lg:grid-cols-3) sehingga layout menyesuaikan ukuran layar.
+
+    Kondisi produk kosong: Jika tidak ada produk, menampilkan gambar no-product.png yg sebelumnya telah saya simpan di static/image/ dan pesan menggunakan {% if not product_list %}.
+
+    Card Product: Setiap produk ditampilkan dalam card yg telah saya sebutkan sebelumnya.
+
+    Tombol Edit & Hapus: Menambahkan dua tombol di setiap card untuk mengedit dan menghapus produk.
+
+- Navigation Bar (Navbar)
+
+    Desain & Warna: Navbar fixed di atas (fixed top-0 w-full), latar biru gelap, border biru transparan.
+
+    Teks utama putih kebiruan (text-blue-50), efek hover biru neon (hover:text-[#0A84FF]).
+
+    Responsif: Menggunakan flex dan hidden md:flex untuk membedakan tampilan desktop dan mobile, dan ,menambahkan tombol hamburger dan JavaScript sederhana untuk toggle menu pada ukuran mobile.
+
+Pada halaman lainnya seperti login, register, add product, edit product, detail product, dst kurang lebih saya hanya melakukan kustoisasi pada warna halaman dan tombol, seperti yg telah saya sebutkan di atas.
+
+-----------------------------------------------------------------------------------------------
+
+</details>

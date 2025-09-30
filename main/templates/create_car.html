@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% block meta %}
+<title>Add Car - EGO Gear</title>
+{% endblock meta %}
+
+{% block content %}
+
+    <form method="POST" class="space-y-6">
+        {% csrf_token %}
+        {% for field in form %}
+          <div>
+            <label for="{{ field.id_for_label }}" 
+                   class="block text-sm font-medium text-blue-200 mb-2">
+              {{ field.label }}
+            </label>
+            <div class="w-full">
+              {{ field }}
+            </div>
+            {% if field.help_text %}
+              <p class="mt-1 text-xs text-blue-300">{{ field.help_text }}</p>
+            {% endif %}
+            {% for error in field.errors %}
+              <p class="mt-1 text-xs text-red-400">{{ error }}</p>
+            {% endfor %}
+          </div>
+        {% endfor %}
+
+  <div class="flex flex-col sm:flex-row gap-4 pt-6 border-t border-blue-800">
+          <a href="{% url 'main:show_main' %}" 
+             class="order-2 sm:order-1 px-6 py-3 border border-blue-500/40
+                    text-blue-200 rounded-md font-medium text-center
+                    hover:bg-[#1C1F3B] hover:text-[#0A84FF] transition-colors">
+            Cancel
+          </a>
+          <button type="submit"
+             class="order-1 sm:order-2 flex-1 bg-[#0A84FF] text-white px-6 py-3
+                    rounded-md font-semibold shadow-[0_0_10px_#0A84FF]
+                    hover:bg-[#1E90FF] transition-colors">
+            Unleash Gear
+          </button>
+        </div>
+
+</form>
+{% endblock %}

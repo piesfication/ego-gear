@@ -13,7 +13,7 @@ from django.http import HttpResponse
 from django.core import serializers
 
 from django.shortcuts import render, redirect, get_object_or_404
-from main.forms import ProductForm
+from main.forms import ProductForm, CarForm
 from main.models import Product, Employee
 
 @login_required(login_url='/login')
@@ -50,6 +50,24 @@ def create_product(request):
     }
 
     return render(request, "create_product.html", context)
+
+
+def create_car(request):
+    form = CarForm(request.POST or None)
+
+    if form.is_valid() and request.method == 'POST':
+        product_entry = form.save(commit = False)
+        product_entry.user = request.user
+        product_entry.save()
+        return redirect('main:show_main')
+    
+    context = {
+        'form': form
+    }
+
+    return render(request, "create_car.html", context)
+    
+    
 
 @login_required(login_url='/login')
 def show_product(request, id):
