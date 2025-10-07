@@ -125,7 +125,7 @@
 <script>
 
   let deleteProductId = null;
-  let editingProductId = null; // untuk simpan ID produk yang sedang diedit
+  let editingProductId = null; 
 
 // buka modal edit
   function showEditModal(productId) {
@@ -258,7 +258,7 @@
       form.reset();
 
       // 🔹 Reset state edit biar balik ke mode "add"
-      editingProductId = null;
+      
 
       // 🔹 Ubah judul modal balik ke "Add Gear"
       document.querySelector("#crudModal h3").textContent = "Add Gear";
@@ -297,6 +297,7 @@
       // Show different toast messages for add vs. edit
       const toastMessage = editingProductId ? 'Gear updated successfully!' : 'Gear added successfully!';
       showToast(toastMessage, '', 'success');
+      editingProductId = null;
       document.dispatchEvent(new CustomEvent('productAdded'));
     } else {
       showToast('Error', data.message || 'Failed to save gear', 'error');

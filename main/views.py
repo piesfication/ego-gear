@@ -147,13 +147,35 @@ def show_xml_by_id(request, product_id):
    except Product.DoesNotExist:
        return HttpResponse(status=404)
 
+# def show_json_by_id(request, product_id):
+#    try:
+#        product_item = Product.objects.get(pk=product_id)
+#        json_data = serializers.serialize("json", [product_item])
+#        return HttpResponse(json_data, content_type="application/json")
+#    except Product.DoesNotExist:
+#        return HttpResponse(status=404)
+
 def show_json_by_id(request, product_id):
-   try:
-       product_item = Product.objects.get(pk=product_id)
-       json_data = serializers.serialize("json", [product_item])
-       return HttpResponse(json_data, content_type="application/json")
-   except Product.DoesNotExist:
-       return HttpResponse(status=404)
+    try:
+        product = Product.objects.select_related('user').get(pk=product_id)
+        data = {
+            'id': str(product.id),
+            'name': product.name,
+            'description': product.description,
+            'price': product.price,
+            'stock': product.stock,
+            'brand':product.brand,
+            'category': product.category,
+            'thumbnail': product.thumbnail,
+            'hype': product.hype,
+            'created_at': product.created_at.isoformat() if product.created_at else None,
+            'is_featured': product.is_featured,
+            'user_id': product.user_id,
+            'user_username': product.user.username if product.user_id else None,
+        }
+        return JsonResponse(data)
+    except product.DoesNotExist:
+        return JsonResponse({'detail': 'Not found'}, status=404)
    
 # Create your views here.
 
