@@ -13,8 +13,17 @@ from django.http import HttpResponse
 from django.core import serializers
 
 from django.shortcuts import render, redirect, get_object_or_404
-from main.forms import ProductForm, CarForm
-from main.models import Product, Employee
+from main.forms import ProductForm
+from main.models import Product
+
+from django.http import HttpResponseRedirect, JsonResponse
+
+from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.http import require_POST
+
+from django.utils.html import strip_tags
+
+import json
 
 @login_required(login_url='/login')
 def show_main(request):
@@ -51,21 +60,44 @@ def create_product(request):
 
     return render(request, "create_product.html", context)
 
+@csrf_exempt
+@require_POST
+def create_product_ajax(request):
+    if request.method != "POST":
+        return JsonResponse({"success": False, "message": "Invalid request method"}, status=400)
 
-def create_car(request):
-    form = CarForm(request.POST or None)
+    if not request.user.is_authenticated:
+        return JsonResponse({"success": False, "message": "User not authenticated"}, status=401)
 
-    if form.is_valid() and request.method == 'POST':
-        product_entry = form.save(commit = False)
-        product_entry.user = request.user
-        product_entry.save()
-        return redirect('main:show_main')
+    try:
+        # Use Django form for validation
+        form = ProductForm(request.POST)
+        if form.is_valid():
+            product = form.save(commit=False)
+            product.user = request.user
+            product.save()
+            return JsonResponse({"success": True}, status=201)
+        else:
+            # Return form errors as JSON
+            return JsonResponse({"success": False, "message": json.loads(form.errors.as_json())}, status=400)
+    except Exception as e:
+        return JsonResponse({"success": False, "message": str(e)}, status=500)
+
+
+# def create_car(request):
+#     form = CarForm(request.POST or None)
+
+#     if form.is_valid() and request.method == 'POST':
+#         product_entry = form.save(commit = False)
+#         product_entry.user = request.user
+#         product_entry.save()
+#         return redirect('main:show_main')
     
-    context = {
-        'form': form
-    }
+#     context = {
+#         'form': form
+#     }
 
-    return render(request, "create_car.html", context)
+#     return render(request, "create_car.html", context)
     
     
 
@@ -87,8 +119,25 @@ def show_xml(request):
 
 def show_json(request):
     product_list = Product.objects.all()
-    json_data = serializers.serialize("json", product_list)
-    return HttpResponse(json_data, content_type="application/json")
+    data = [
+        {
+            'id': str(product.id),
+            'name': product.name,
+            'stock':product.stock,
+            'price':product.price,
+            'brand':product.brand,
+            'description': product.description,
+            'category': product.category,
+            'thumbnail': product.thumbnail,
+            'hype': product.hype,
+            'created_at': product.created_at.isoformat() if product.created_at else None,
+            'is_featured': product.is_featured,
+            'user_id': product.user_id,
+        }
+        for product in product_list
+    ]
+
+    return JsonResponse(data, safe=False)
 
 def show_xml_by_id(request, product_id):
    try:
@@ -122,38 +171,11 @@ def show_json_by_id(request, product_id):
 
 #     return render(request, "main.html", context)
 
-def register(request):
-    form = UserCreationForm()
-
-    if request.method == "POST":
-        form = UserCreationForm(request.POST)
-        if form.is_valid():
-            form.save()
-            messages.success(request, 'Your account has been successfully created!')
-            return redirect('main:login')
-    context = {'form':form}
-    return render(request, 'register.html', context)
-
-def login_user(request):
-   if request.method == 'POST':
-      form = AuthenticationForm(data=request.POST)
-
-      if form.is_valid():
-            user = form.get_user()
-            login(request, user)
-            response = HttpResponseRedirect(reverse("main:show_main"))
-            response.set_cookie('last_login', str(datetime.datetime.now()))
-            return response  
-
-   else:
-      form = AuthenticationForm(request)
-   context = {'form': form}
-   return render(request, 'login.html', context)
-
 def logout_user(request):
     logout(request)
     response = HttpResponseRedirect(reverse('main:login'))
     response.delete_cookie('last_login')
+    response.set_cookie('toast', 'You have successfully logged out!', max_age=5)
     return response
 
 def edit_product(request, id):
@@ -169,7 +191,111 @@ def edit_product(request, id):
 
     return render(request, "edit_product.html", context)
 
+@csrf_exempt
+def edit_product_ajax(request, id):
+    if request.method == 'POST':
+        try:
+            product = Product.objects.get(pk=id, user=request.user)
+        except Product.DoesNotExist:
+            return JsonResponse({'success': False, 'message': 'Product not found'}, status=404)
+
+        product.name = request.POST.get('name', product.name)
+        product.description = request.POST.get('description', product.description)
+        product.category = request.POST.get('category', product.category)
+        product.thumbnail = request.POST.get('thumbnail', product.thumbnail)
+        product.is_featured = 'is_featured' in request.POST
+        product.save()
+
+        return JsonResponse({'success': True, 'message': 'Product updated successfully'})
+    
+    return JsonResponse({'success': False, 'message': 'Invalid request method'})
+
+
 def delete_product(request, id):
     product = get_object_or_404(Product, pk=id)
     product.delete()
     return HttpResponseRedirect(reverse('main:show_main'))
+
+@csrf_exempt
+def delete_product_ajax(request, id):
+    if request.method == "DELETE":
+        product = get_object_or_404(Product, id=id)
+        
+        # Optional: pastikan user yang hapus adalah pemilik produk
+        if request.user != product.user:
+            return JsonResponse({"success": False, "error": "Unauthorized"}, status=403)
+        
+        product.delete()
+        return JsonResponse({"success": True, "message": "Product deleted successfully!"})
+    
+    return JsonResponse({"success": False, "error": "Invalid request method"}, status=400)
+# /////////////////////////
+
+def register_ajax(request):
+    if request.method == "POST":
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            form.save()
+            # login(request, user)  # login otomatis setelah register
+            return JsonResponse({
+                "success": True,
+                "message": "Your account has been successfully created!",
+                "redirect_url": reverse("main:login")  # atau halaman lain setelah register
+            })
+        else:
+            # Ambil error pertama
+            error = next(iter(form.errors.values()))[0]
+            return JsonResponse({
+                "success": False,
+                "message": f"Register failed: {error}"
+            })
+    return JsonResponse({"success": False, "message": "Method harus POST"})
+
+def register(request):
+    form = UserCreationForm()
+
+    # if request.method == "POST":
+    #     form = UserCreationForm(request.POST)
+    #     if form.is_valid():
+    #         form.save()
+    #         messages.success(request, 'Your account has been successfully created!')
+    #         return redirect('main:login')
+    context = {'form':form}
+    return render(request, 'register.html', context)
+
+def login_ajax(request):
+    if request.method == 'POST':
+        form = AuthenticationForm(data=request.POST)
+        if form.is_valid():
+            user = form.get_user()
+            login(request, user)
+            response = JsonResponse({
+                "success": True,
+                "message": "Login successful!",
+                "redirect_url": reverse("main:show_main")
+            })
+            # simpan cookie last_login
+            response.set_cookie('last_login', str(datetime.datetime.now()))
+            return response
+        else:
+            return JsonResponse({
+                "success": False,
+                "message": "Username atau password salah."
+            })
+    return JsonResponse({"success": False, "message": "Method harus POST"})
+
+def login_user(request):
+#    if request.method == 'POST':
+#       form = AuthenticationForm(data=request.POST)
+
+#       if form.is_valid():
+#             user = form.get_user()
+#             login(request, user)
+#             response = HttpResponseRedirect(reverse("main:show_main"))
+#             response.set_cookie('last_login', str(datetime.datetime.now()))
+#             return response  
+
+#    else:
+    form = AuthenticationForm(request)
+    context = {'form': form}
+    return render(request, 'login.html', context)

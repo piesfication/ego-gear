@@ -39,14 +39,23 @@ class Product(models.Model):
         self.hype += 1
         self.save()
 
-class Employee(models.Model) :
-    name = models.CharField(max_length=255)
-    age = models.PositiveIntegerField()
-    persona = models.TextField()
+# class Employee(models.Model) :
+#     name = models.CharField(max_length=255)
+#     age = models.PositiveIntegerField()
+#     persona = models.TextField()
 
-class Car(models.Model) :
-    name = models.CharField(max_length=255)
-    brand = models.CharField(max_length=255)
-    stock = models.IntegerField
+# class Car(models.Model) :
+#     name = models.CharField(max_length=255)
+#     brand = models.CharField(max_length=255)
+#     stock = models.IntegerField
 
+class Book(models.Model) :
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    nama = models.CharField(max_length=255)
+
+class Author(models.Model) :
+    bio = models.TextField()
+    books = models.ManyToManyField(Book)
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    
     
