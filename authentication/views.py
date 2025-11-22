@@ -9,6 +9,8 @@ from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.models import User
 import json
 
+from django.http import JsonResponse
+
 @csrf_exempt
 def login(request):
     username = request.POST['username']
