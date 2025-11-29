@@ -3,6 +3,7 @@ from main.views import show_main, create_product, show_product, show_xml, show_j
 from main.views import register, login_user, logout_user
 from main.views import edit_product, delete_product
 from main.views import login_ajax, register_ajax, create_product_ajax, delete_product_ajax, edit_product_ajax
+from main.views import proxy_image
 
 app_name = 'main'
 
@@ -25,5 +26,6 @@ urlpatterns = [
     path('create-product-ajax', create_product_ajax, name='create_product_ajax'),
     path('delete-product-ajax/<uuid:id>/', delete_product_ajax, name='delete_product_ajax'),
     path('edit-product-ajax/<uuid:id>/', edit_product_ajax, name='edit_product_ajax'),
+    path('proxy-image/', proxy_image, name='proxy_image'),
 
 ]
