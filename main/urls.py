@@ -4,6 +4,7 @@ from main.views import register, login_user, logout_user
 from main.views import edit_product, delete_product
 from main.views import login_ajax, register_ajax, create_product_ajax, delete_product_ajax, edit_product_ajax
 from main.views import proxy_image
+from main.views import increase_hype
 
 app_name = 'main'
 
@@ -27,5 +28,7 @@ urlpatterns = [
     path('delete-product-ajax/<uuid:id>/', delete_product_ajax, name='delete_product_ajax'),
     path('edit-product-ajax/<uuid:id>/', edit_product_ajax, name='edit_product_ajax'),
     path('proxy-image/', proxy_image, name='proxy_image'),
+    path('products/<uuid:id>/increase_hype/', increase_hype, name='increase_hype'),
+
 
 ]

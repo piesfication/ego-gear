@@ -341,3 +341,16 @@ def proxy_image(request):
         )
     except requests.RequestException as e:
         return HttpResponse(f'Error fetching image: {str(e)}', status=500)
+
+@csrf_exempt
+def increase_hype(request, id):
+    if request.method == "POST":
+        try:
+            product = Product.objects.get(id=id)
+            product.hype += 1
+            product.save()
+            return JsonResponse({"status": "success", "hype": product.hype})
+        except Product.DoesNotExist:
+            return JsonResponse({"status": "error", "message": "Product not found"}, status=404)
+
+    return JsonResponse({"status": "error", "message": "Only POST allowed"}, status=400)
