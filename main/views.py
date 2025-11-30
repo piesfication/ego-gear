@@ -361,25 +361,44 @@ def increase_hype(request, id):
     return JsonResponse({"status": "error", "message": "Only POST allowed"}, status=400)
 
 @csrf_exempt
-def create_news_flutter(request):
+def create_product_flutter(request):
     if request.method == 'POST':
         data = json.loads(request.body)
-        title = strip_tags(data.get("title", ""))  # Strip HTML tags
-        content = strip_tags(data.get("content", ""))  # Strip HTML tags
+        
+        name = strip_tags(data.get("name", ""))
+        description = strip_tags(data.get("description", ""))
+        brand = data.get("brand", "")
         category = data.get("category", "")
         thumbnail = data.get("thumbnail", "")
+        stock = data.get("stock", 0)
+        price = data.get("price", 0)
+        hype = data.get("hype", 0)
         is_featured = data.get("is_featured", False)
-        user = request.user
-        
-        new_news = News(
-            title=title, 
-            content=content,
+
+        # Jika kamu ingin created_at dari Flutter
+        created_at = data.get("created_at", None)
+
+        product = Product(
+            name=name,
+            description=description,
+            brand=brand,
             category=category,
             thumbnail=thumbnail,
+            stock=stock,
+            price=price,
+            hype=hype,
             is_featured=is_featured,
-            user=user
+            user=request.user,
         )
-        new_news.save()
+        
+    
+        if created_at:
+                try:
+                    product.created_at = created_at
+                except:
+                    pass
+
+        product.save()
         
         return JsonResponse({"status": "success"}, status=200)
     else:

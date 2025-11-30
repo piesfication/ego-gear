@@ -5,7 +5,7 @@ from main.views import edit_product, delete_product
 from main.views import login_ajax, register_ajax, create_product_ajax, delete_product_ajax, edit_product_ajax
 from main.views import proxy_image
 from main.views import increase_hype
-from main.views import create_news_flutter
+from main.views import create_product_flutter
 
 app_name = 'main'
 
@@ -30,7 +30,7 @@ urlpatterns = [
     path('edit-product-ajax/<uuid:id>/', edit_product_ajax, name='edit_product_ajax'),
     path('proxy-image/', proxy_image, name='proxy_image'),
     path('products/<uuid:id>/increase_hype/', increase_hype, name='increase_hype'),
-    path('create-flutter/', create_news_flutter, name='create_news_flutter'),
+    path('create-flutter/', create_product_flutter, name='create_product_flutter'),
 
 
 ]
